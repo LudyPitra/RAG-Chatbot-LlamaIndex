@@ -1,4 +1,3 @@
-import sys
 import os
 import asyncio
 import logging
@@ -16,18 +15,21 @@ from llama_index.readers.docling import DoclingReader
 
 logging.basicConfig(
     level=logging.ERROR,
-    format="%(message)s",
-    stream=sys.stdout,
 )
 
-logging.getLogger("chromadb").setLevel(logging.ERROR)
-logging.getLogger("httpx").setLevel(logging.ERROR)
-logging.getLogger("ollama").setLevel(logging.ERROR)
-logging.getLogger("llama_index").setLevel(logging.ERROR)
-logging.getLogger("docling").setLevel(logging.ERROR)
-logging.getLogger("docling_core").setLevel(logging.ERROR)
-logging.getLogger("rapidocr").setLevel(logging.ERROR)
-logging.getLogger("RapidOCR").setLevel(logging.ERROR)
+for logger_name in [
+    "chromadb",
+    "httpx",
+    "ollama",
+    "llama_index",
+    "docling",
+    "docling_core",
+    "rapidocr",
+    "RapidOCR",
+]:
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(logging.ERROR)
+    logger.propagate = False
 
 Settings.llm = Ollama(
     model="ministral-3:14b", request_timeout=360.0, context_window=8000
@@ -72,8 +74,8 @@ async def load_documents(ctx: Context, file_path: str) -> str:
         return f"❌ Error: Format '{file_ext}' not supported. Use: {', '.join(supported_extensions)}"
 
     try:
-        print(f"Loading documents: {file_path}")
-        print("⏳Processing and creating embeddings...(may take a few seconds")
+        print(f"\nLoading documents: {file_path}\n")
+        print("⏳Processing and creating embeddings...(may take a few seconds)\n")
 
         documents = reader.load_data(file_path)
 
