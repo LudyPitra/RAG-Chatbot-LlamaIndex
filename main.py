@@ -24,7 +24,10 @@ logging.getLogger("chromadb").setLevel(logging.ERROR)
 logging.getLogger("httpx").setLevel(logging.ERROR)
 logging.getLogger("ollama").setLevel(logging.ERROR)
 logging.getLogger("llama_index").setLevel(logging.ERROR)
-
+logging.getLogger("docling").setLevel(logging.ERROR)
+logging.getLogger("docling_core").setLevel(logging.ERROR)
+logging.getLogger("rapidocr").setLevel(logging.ERROR)
+logging.getLogger("RapidOCR").setLevel(logging.ERROR)
 
 Settings.llm = Ollama(
     model="ministral-3:14b", request_timeout=360.0, context_window=8000
@@ -167,6 +170,7 @@ agent = FunctionAgent(
         - Respond normally without using the tools
         
     IMPORTANT:
+        - Always anwser in the same language as the question
         - Be direct and objective in your responses
         - Cite the snippets when relevant
         - If no document is loaded, inform the user
@@ -206,7 +210,7 @@ async def main():
             else:
                 response = await agent.run(prompt, ctx=ctx)
 
-            print(f"Assistant: {response}")
+            print(f"\nAssistant: {response}")
 
     except KeyboardInterrupt:
         print("\n\n⚠️Interrupted by user")
