@@ -177,20 +177,42 @@ ctx = Context(agent)
 
 
 async def main():
-    while True:
-        print("\n-----------------------")
-        prompt = input("Me: ").strip()
+    print("-" * 30)
+    print("🤖 RAG Chatbot - LlamaIndex")
+    print("-" * 30)
+    print("\nAvailable commands")
+    print(" - 'Load <path>' - Load a document")
+    print(" - 'exit' - Exit and clean vectordb")
+    print("\n💡 Tip: Load a document before making a query")
 
-        if not prompt:
-            continue
+    try:
+        while True:
+            print("\n" + "-" * 60)
 
-        if prompt.lower() == "exit":
-            client.reset()
-            break
+            prompt = input("Me: ").strip()
 
-        response = await agent.run(prompt, ctx=ctx)
-        print("\n")
-        print(f"Assistant: {str(response)}")
+            if not prompt:
+                continue
+
+            if prompt.lower() == "exit":
+                break
+
+            if prompt.lower().startswith("load"):
+                file_path = prompt[5:].strip()
+                response = await agent.run(
+                    f"Use the load_documents function to load the document: {file_path}",
+                    ctx=ctx,
+                )
+            else:
+                response = await agent.run(prompt, ctx=ctx)
+
+            print(f"Assistant: {response}")
+
+    except KeyboardInterrupt:
+        print("\n\n⚠️Interrupted by user")
+    finally:
+        cleanup_vectordb()
+        print("\n 👋 See you later")
 
 
 if __name__ == "__main__":
