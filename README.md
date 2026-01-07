@@ -104,3 +104,4 @@ python main.py --help
 | ChromaDB | Vector database |
 | Textual | TUI interface |
 | Docling | Document parser |
+

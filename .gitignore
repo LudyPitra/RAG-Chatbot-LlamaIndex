@@ -9,6 +9,5 @@ wheels/
 # Virtual environments
 .venv
 uv.lock
-data
 vectordb
 
